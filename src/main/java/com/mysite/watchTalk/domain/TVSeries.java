@@ -23,6 +23,10 @@ public class TVSeries {
 
     private Integer page;
 
+    public Integer getTotalPages() {
+        return this.totalPages;
+    }
+
     public List<Results> getResults() {
         return this.results;
     }

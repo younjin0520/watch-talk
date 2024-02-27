@@ -13,11 +13,13 @@ public class WatchTalkApplication {
 		SpringApplication.run(WatchTalkApplication.class, args);
 	}
 
+	/*
 	@Bean
 	public CommandLineRunner initData(TVSeriesFetcher tvSeriesFetcher) {
 		return args -> {
-			// 초기화 코드 실행
+//			 초기화 코드 실행
 			tvSeriesFetcher.saveToDB();
 		};
 	}
+	 */
 }
