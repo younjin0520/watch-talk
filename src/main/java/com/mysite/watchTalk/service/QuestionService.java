@@ -3,6 +3,7 @@ package com.mysite.watchTalk.service;
 import com.mysite.watchTalk.DataNotFoundException;
 import com.mysite.watchTalk.domain.Answer;
 import com.mysite.watchTalk.domain.Question;
+import com.mysite.watchTalk.domain.Results;
 import com.mysite.watchTalk.domain.SiteUser;
 import com.mysite.watchTalk.repository.QuestionRepository;
 import jakarta.persistence.criteria.*;
@@ -26,6 +27,15 @@ public class QuestionService {
 
     public List<Question> getList() {
         return this.questionRepository.findAll();
+    }
+
+    public Page<Question> getQuestionList(int pageNo, Results results) {
+//       List<Sort.Order> sort = new ArrayList<>();
+//       sort.add(Sort.Order.desc("createDate"));
+//       Pageable pageable = PageRequest.of(pageNo, 20, Sort.by(sort));
+        Pageable pageable = PageRequest.of(pageNo, 20);
+//        Specification<Question> spec = search(kw);
+        return this.questionRepository.findByResults(pageable, results);
     }
 
     //특정 페이지만 조회

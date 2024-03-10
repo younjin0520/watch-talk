@@ -1,12 +1,14 @@
 package com.mysite.watchTalk.controller;
 
 import com.mysite.watchTalk.domain.Answer;
-import com.mysite.watchTalk.form.AnswerForm;
-import com.mysite.watchTalk.service.AnswerService;
 import com.mysite.watchTalk.domain.Question;
+import com.mysite.watchTalk.domain.Results;
 import com.mysite.watchTalk.domain.SiteUser;
+import com.mysite.watchTalk.form.AnswerForm;
 import com.mysite.watchTalk.form.QuestionForm;
+import com.mysite.watchTalk.service.AnswerService;
 import com.mysite.watchTalk.service.QuestionService;
+import com.mysite.watchTalk.service.ResultsService;
 import com.mysite.watchTalk.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final UserService userService;
+    private final ResultsService resultsService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
@@ -37,6 +40,21 @@ public class QuestionController {
         model.addAttribute("paging", paging);   // questionList라는 이름으로 값 저장
         model.addAttribute("kw", kw);
         return "question_list"; // question_list.html 반환
+    }
+
+    @GetMapping("/list/{id}")
+    public String board(
+            Model model,
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "kw", defaultValue = "") String kw
+    ) {
+        Results result = this.resultsService.getResult(id);
+        Page<Question> paging = this.questionService.getQuestionList(page, result);
+        model.addAttribute("result", result);
+        model.addAttribute("paging", paging);
+        model.addAttribute("kw", kw);
+        return "post_list";
     }
 
     //상세페이지 매핑
@@ -75,7 +93,7 @@ public class QuestionController {
     @GetMapping("/modify/{id}")
     public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
         Question question = this.questionService.getQuestion(id);
-        if(!question.getAuthor().getUsername().equals(principal.getName())) {
+        if (!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());

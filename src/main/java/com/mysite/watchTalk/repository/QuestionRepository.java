@@ -1,6 +1,7 @@
 package com.mysite.watchTalk.repository;
 
 import com.mysite.watchTalk.domain.Question;
+import com.mysite.watchTalk.domain.Results;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Question findBySubject(String subject);
     Question findBySubjectAndContent(String subject, String content);
+
+    Page<Question> findByResults(Pageable pageable, Results results);
     List<Question> findBySubjectLike(String subject); // 특정 문자열이 포함된 데이터 조회
     Page<Question> findAll(Pageable pageable);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);

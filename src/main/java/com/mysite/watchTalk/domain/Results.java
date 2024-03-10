@@ -40,6 +40,10 @@ public class Results {
     private Integer voteAverage;
     private Integer voteCount;
 
+    // cascade type : 질문 삭제 시 답변 모두 삭제
+    @OneToMany(mappedBy = "results", cascade = CascadeType.REMOVE)
+    private List<Question> questionsList;
+
     public void setTvSeries(TVSeries tvSeries) {
         if (this.tvSeries != null) {
             this.tvSeries.getResults().remove(this);

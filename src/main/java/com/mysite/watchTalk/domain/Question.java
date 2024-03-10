@@ -39,4 +39,7 @@ public class Question {
 
     @ManyToMany
     Set<SiteUser> voter;    // 추천인
+
+    @ManyToOne
+    private Results results;
 }
