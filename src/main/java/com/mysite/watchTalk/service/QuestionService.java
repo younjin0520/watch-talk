@@ -57,12 +57,13 @@ public class QuestionService {
         }
     }
 
-    public Question create(String subject, String content, SiteUser user) {
+    public Question create(String subject, String content, SiteUser user, Results results) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
         q.setAuthor(user);
+        q.setResults(results);
         this.questionRepository.save(q);
         return q;
     }

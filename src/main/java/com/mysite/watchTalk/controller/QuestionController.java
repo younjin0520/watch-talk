@@ -49,12 +49,35 @@ public class QuestionController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "kw", defaultValue = "") String kw
     ) {
-        Results result = this.resultsService.getResult(id);
-        Page<Question> paging = this.questionService.getQuestionList(page, result);
-        model.addAttribute("result", result);
+        Results results = this.resultsService.getResult(id);
+        Page<Question> paging = this.questionService.getQuestionList(page, results);
+        model.addAttribute("results", results);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         return "post_list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/create/{id}")
+    public String contentQuestionCreate(QuestionForm questionForm) {
+        return "question_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/create/{id}")
+    public String contentQuestionCreate(
+            @PathVariable("id") Integer id,
+            @Valid QuestionForm questionForm,
+            BindingResult bindingResult,
+            Principal principal
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "question_form";
+        }
+        Results results = this.resultsService.getResult(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser, results);
+        return "redirect:/question/list/{id}";
     }
 
     //상세페이지 매핑
@@ -70,23 +93,6 @@ public class QuestionController {
         model.addAttribute("paging", paging);
         model.addAttribute("sort", sort);
         return "question_detail";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/create")
-    public String questionCreate(QuestionForm questionForm) {
-        return "question_form";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "question_form";
-        }
-        SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
-        return "redirect:/question/list";
     }
 
     @PreAuthorize("isAuthenticated()")
