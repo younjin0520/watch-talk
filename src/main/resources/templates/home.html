@@ -1,0 +1,58 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container my-3">
+    <div class="row my-3">
+        <div class="col-6">
+            <h3 class="my-4">인기 TOP20</h3>
+            <table class="table">
+                <thead class="table-dark">
+                <tr class="text-center">
+                    <th style="width:15%">번호</th>
+                    <th>프로그램명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="text-center" th:each="result, loop : ${resultsByPopularity}">
+                    <td th:text="${loop.index + 1}"></td>
+                    <td class="text-start">
+                        <a class="text-dark" th:href="@{|/question/list/${result.id}|}" th:text="${result.name}"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6">
+            <h3 class="my-4">최신 TOP20</h3>
+            <table class="table">
+                <thead class="table-dark">
+                <tr class="text-center">
+                    <th style="width:15%">번호</th>
+                    <th>프로그램명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="text-center" th:each="result, loop : ${resultsByRecent}">
+                    <td th:text="${loop.index + 1}"></td>
+                    <td class="text-start">
+                        <a class="text-dark" th:href="@{|/question/list/${result.id}|}" th:text="${result.name}"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 검색 폼-->
+    <form th:action="@{/search}" method="get" id="searchForm">
+        <input type="hidden" id="kw" name="kw" th:value="${kw}">
+        <input type="hidden" id="page" name="page" th:value="${page}">
+    </form>
+</div>
+
+<script layout:fragment="script" type='text/javascript'>
+    const btn_search = document.getElementById("btn_search");
+    btn_search.addEventListener('click', function() {
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+        document.getElementById('page').value = 0;
+        document.getElementById('searchForm').submit();
+    });
+</script>
+</html>
