@@ -16,6 +16,12 @@
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <th:block layout:fragment="content"></th:block>
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
+<!-- 검색 폼-->
+<form th:action="@{/search}" method="get" id="searchForm">
+  <input type="hidden" id="kw" name="kw" th:value="${kw}">
+  <input type="hidden" id="page" name="page" th:value="${page}">
+</form>
+<!-- 검색 폼-->
 <!-- BootStrap JS -->
 <script th:src="@{/bootstrap.min.js}"></script>
 <!-- 자바스크립트 Start -->
