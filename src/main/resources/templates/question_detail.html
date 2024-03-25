@@ -30,32 +30,33 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                    th:text="수정"></a>
+                <!-- 질문 삭제 버튼 -->
+                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제"></a>
             </div>
-            <!-- 질문 삭제 버튼 -->
-            <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
-               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-               th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
-               th:text="삭제"></a>
+
         </div>
     </div>
-    <!-- 답변 작성 -->
+    <!-- 댓글 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="10" class="form-control"></textarea>
-        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-primary my-2">
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="1" class="form-control"></textarea>
+        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" rows="1" class="form-control"></textarea>
+        <input type="submit" value="댓글등록" class="btn btn-secondary my-2">
     </form>
-    <!-- 답변 정렬-->
+    <!-- 댓글 정렬-->
     <form id="sort-form" method="get">
         <select class="form-select" id="form-select" name="sort" onchange="this.form.submit()" style="width: 200px; float:right;">
             <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
             <option value="recommended" th:selected="${sort == 'recommended'}">추천순</option>
         </select>
     </form>
-    <!-- 답변의 갯수 표시 -->
+    <!-- 댓글의 갯수 표시 -->
     <h5 class="border-bottom my-3 py-2"
-        th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
-    <!-- 답변 반복 시작 -->
+        th:text="|${#lists.size(question.answerList)}개의 댓글이 있습니다.|"></h5>
+    <!-- 댓글 반복 시작 -->
     <div class="card my-3" th:each="answer : ${paging}">
         <a th:id="|answer_${answer.id}|"></a>
         <div class="card-body">
@@ -92,7 +93,7 @@
             </div>
         </div>
     </div>
-    <!-- 답변 반복 끝  -->
+    <!-- 댓글 반복 끝  -->
     <!-- 페이징 처리 시작 -->
     <div th:if="${!paging.isEmpty()}">
         <ul class="pagination justify-content-center">
