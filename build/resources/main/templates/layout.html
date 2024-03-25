@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -8,7 +8,7 @@
   <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
   <!-- sbb CSS -->
   <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-  <title>Forum</title>
+  <title>WATCH TALK!</title>
 </head>
 <body>
 <!-- 네비게이션바 -->
@@ -16,8 +16,22 @@
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <th:block layout:fragment="content"></th:block>
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
+<!-- 검색 폼-->
+<form th:action="@{/search}" method="get" id="searchForm">
+  <input type="hidden" id="kw" name="kw" th:value="${kw}">
+  <input type="hidden" id="page" name="page" th:value="${page}">
+</form>
+<!-- 검색 폼-->
 <!-- BootStrap JS -->
 <script th:src="@{/bootstrap.min.js}"></script>
+<script layout:fragment="common_script" type='text/javascript'>
+  const btn_search = document.getElementById("btn_search");
+  btn_search.addEventListener('click', function () {
+    document.getElementById('kw').value = document.getElementById('search_kw').value;
+    document.getElementById('page').value = 0;
+    document.getElementById('searchForm').submit();
+  });
+</script>
 <!-- 자바스크립트 Start -->
 <th:block layout:fragment="script"></th:block>
 <!-- 자바스크립트 End -->
