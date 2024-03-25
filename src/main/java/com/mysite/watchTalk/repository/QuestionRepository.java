@@ -18,6 +18,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Page<Question> findByResults(Pageable pageable, Results results);
     List<Question> findBySubjectLike(String subject); // 특정 문자열이 포함된 데이터 조회
-    Page<Question> findAll(Pageable pageable);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 }
+

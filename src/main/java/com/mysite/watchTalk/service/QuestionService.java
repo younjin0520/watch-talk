@@ -29,13 +29,15 @@ public class QuestionService {
         return this.questionRepository.findAll();
     }
 
-    public Page<Question> getQuestionList(int pageNo, Results results) {
-//       List<Sort.Order> sort = new ArrayList<>();
-//       sort.add(Sort.Order.desc("createDate"));
-//       Pageable pageable = PageRequest.of(pageNo, 20, Sort.by(sort));
-        Pageable pageable = PageRequest.of(pageNo, 20);
-//        Specification<Question> spec = search(kw);
-        return this.questionRepository.findByResults(pageable, results);
+    public Page<Question> getQuestionList(String kw, int pageNo, Results results) {
+       List<Sort.Order> sort = new ArrayList<>();
+       sort.add(Sort.Order.desc("createDate"));
+       Pageable pageable = PageRequest.of(pageNo, 20, Sort.by(sort));
+
+       Specification<Question> spec = search(kw);
+       spec = spec.and(equalResults(results));
+
+        return this.questionRepository.findAll(spec, pageable);
     }
 
     //특정 페이지만 조회
@@ -103,5 +105,9 @@ public class QuestionService {
                         cb.like(u2.get("username"), "%" + kw + "%")); // 답변
             }
         };
+    }
+
+    public static Specification<Question> equalResults(Results results) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("results"), results);
     }
 }
