@@ -89,7 +89,7 @@
     Array.from(page_elements).forEach(function (element) {
         element.addEventListener('click', function () {
             document.getElementById('page').value = this.dataset.page;
-            document.getElementById('searchForm').submit();
+            document.getElementById('searchQuestionForm').submit();
         });
     });
     const btn_question_search = document.getElementById("btn_question_search");
