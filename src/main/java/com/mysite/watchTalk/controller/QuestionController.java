@@ -47,13 +47,18 @@ public class QuestionController {
             Model model,
             @PathVariable("id") Integer id,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "kw", defaultValue = "") String kw
+            @RequestParam(value = "searchKw", defaultValue = "") String searchKw
     ) {
         Results results = this.resultsService.getResult(id);
-        Page<Question> paging = this.questionService.getQuestionList(page, results);
+        Page<Question> paging = this.questionService.getQuestionList(searchKw, page, results);
+
+        String imgUrl = "https://image.tmdb.org/t/p/w500" + results.getBackdropPath();
+
+        model.addAttribute("id", id);
         model.addAttribute("results", results);
+        model.addAttribute("imgUrl", imgUrl);
         model.addAttribute("paging", paging);
-        model.addAttribute("kw", kw);
+        model.addAttribute("searchKw", searchKw);
         return "post_list";
     }
 
