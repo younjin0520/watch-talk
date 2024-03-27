@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -16,18 +15,12 @@ public class TVSeries {
     private Long id;
 
     private Integer totalResults;
+    @Getter
     private Integer totalPages;
 
+    @Getter
     @OneToMany(mappedBy = "tvSeries")
     private List<Results> results;
 
     private Integer page;
-
-    public Integer getTotalPages() {
-        return this.totalPages;
-    }
-
-    public List<Results> getResults() {
-        return this.results;
-    }
 }

@@ -21,7 +21,6 @@ import java.net.URI;
 @Transactional
 @Component
 public class TVSeriesFetcher {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMjI5Mjg0MGUyYmM3YWEwMDRjZWFiYjUzM2ZkZjJiYiIsInN1YiI6IjY1ODk2NmYzNjg4Y2QwNTg1MDg0ZDQzZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VRK6bE9d2UXcTt89uMplWkP7OM_pjBMVVauNtS5Pus4";
     private static final String BASE_URL = "https://api.themoviedb.org";
     private static final String LANGUAGE = "ko-KR";
@@ -67,10 +66,7 @@ public class TVSeriesFetcher {
 
         for (page = 2; page <= totalPageNo; page++) {
             TVSeries tvSeriesData = getKoreanTVSeries(page);
-            for (Results result : tvSeriesData.getResults()) {
-                resultsRepository.save(result);
-            }
-            System.out.println(page);
+            resultsRepository.saveAll(tvSeriesData.getResults());
         }
     }
 }

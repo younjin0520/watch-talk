@@ -1,15 +1,9 @@
 package com.mysite.watchTalk.service;
 
 import com.mysite.watchTalk.DataNotFoundException;
-import com.mysite.watchTalk.domain.Answer;
-import com.mysite.watchTalk.domain.Question;
 import com.mysite.watchTalk.domain.Results;
-import com.mysite.watchTalk.domain.SiteUser;
 import com.mysite.watchTalk.repository.ResultsRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +20,6 @@ import java.util.Optional;
 @Service
 public class ResultsService {
     private final ResultsRepository resultsRepository;
-
-    public List<Results> getList() { return this.resultsRepository.findAll(); }
 
     public Page<Results> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
