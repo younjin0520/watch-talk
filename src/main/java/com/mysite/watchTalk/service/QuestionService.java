@@ -25,10 +25,6 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        return this.questionRepository.findAll();
-    }
-
     public Page<Question> getQuestionList(String kw, int pageNo, Results results) {
        List<Sort.Order> sort = new ArrayList<>();
        sort.add(Sort.Order.desc("createDate"));
@@ -37,15 +33,6 @@ public class QuestionService {
        Specification<Question> spec = search(kw);
        spec = spec.and(equalResults(results));
 
-        return this.questionRepository.findAll(spec, pageable);
-    }
-
-    //특정 페이지만 조회
-    public Page<Question> getList(int page, String kw) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Specification<Question> spec = search(kw);
         return this.questionRepository.findAll(spec, pageable);
     }
 

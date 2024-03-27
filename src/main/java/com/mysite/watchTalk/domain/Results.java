@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -43,12 +42,4 @@ public class Results {
     // cascade type : 질문 삭제 시 답변 모두 삭제
     @OneToMany(mappedBy = "results", cascade = CascadeType.ALL)
     private List<Question> questionsList;
-
-    public void setTvSeries(TVSeries tvSeries) {
-        if (this.tvSeries != null) {
-            this.tvSeries.getResults().remove(this);
-        }
-        this.tvSeries = tvSeries;
-        tvSeries.getResults().add(this);
-    }
 }

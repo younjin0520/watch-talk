@@ -50,7 +50,7 @@ public class QuestionController {
         model.addAttribute("imgUrl", imgUrl);
         model.addAttribute("paging", paging);
         model.addAttribute("searchKw", searchKw);
-        return "post_list";
+        return "content_home";
     }
 
     @PreAuthorize("isAuthenticated()")

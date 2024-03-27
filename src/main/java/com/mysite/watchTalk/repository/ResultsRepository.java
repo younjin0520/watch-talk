@@ -9,10 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ResultsRepository extends JpaRepository<Results, Integer> {
-    Page<Results> findAll(Pageable pageable);
-
     Page<Results> findAll(Specification<Results> spec, Pageable pageable);
-
     List<Results> findTop20ByOrderByPopularityDesc();
     List<Results> findTop20ByOrderByFirstAirDateDesc();
 }
