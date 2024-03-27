@@ -1,6 +1,5 @@
 package com.mysite.watchTalk.controller;
 
-import com.mysite.watchTalk.domain.Question;
 import com.mysite.watchTalk.domain.Results;
 import com.mysite.watchTalk.service.ResultsService;
 import lombok.RequiredArgsConstructor;

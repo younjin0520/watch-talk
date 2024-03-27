@@ -1,7 +1,11 @@
 package com.mysite.watchTalk;
 
+import com.mysite.watchTalk.domain.Results;
 import com.mysite.watchTalk.repository.QuestionRepository;
 import com.mysite.watchTalk.domain.Question;
+import com.mysite.watchTalk.service.AnswerService;
+import com.mysite.watchTalk.service.QuestionService;
+import com.mysite.watchTalk.service.ResultsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,31 +18,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class WatchTalkApplicationTests {
-
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionService questionService;
+	@Autowired
+	private ResultsService resultsRepository;
+	@Autowired
+	private AnswerService answerService;
 
 	@Test
 	void testJpa() {
-		// 데이터 조회
-		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
-		Question q = qList.get(0);
-		assertEquals("sbb가 무엇인가요?", q.getSubject());
+		Results results = this.resultsRepository.getResult(4);
 
-		// 데이터 수정 - UPDATE문 실행됨
-		Optional<Question> oq = this.questionRepository.findById(1);
-		assertTrue(oq.isPresent());	// 값이 true인지 테스트
-		Question q2 = oq.get();
-		q2.setSubject("수정된 제목");
-		this.questionRepository.save(q2);
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("도배를 해보자:[%03d]", i);
+			String content = "테스트용 도배입니다.";
+			this.questionService.create(subject, content, null, results);
+		}
 
-		// 데이터 삭제 - delete문 실행됨
-		assertEquals(6, this.questionRepository.count());
-		Optional<Question> oq2 = this.questionRepository.findById(1);
-		assertTrue(oq2.isPresent());
-		Question q3 = oq2.get();
-		this.questionRepository.delete(q3);
-		assertEquals(5, this.questionRepository.count());
+		// answer test
+		Question question = this.questionService.getQuestion(306);
+
+		for (int i = 0; i < 100; i++) {
+			this.answerService.create(question, Integer.toString(i), null);
+		}
 	}
-
 }
