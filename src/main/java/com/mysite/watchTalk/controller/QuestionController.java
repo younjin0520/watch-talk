@@ -33,15 +33,6 @@ public class QuestionController {
     private final UserService userService;
     private final ResultsService resultsService;
 
-    @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "kw", defaultValue = "") String kw) {
-        Page<Question> paging = this.questionService.getList(page, kw);
-        model.addAttribute("paging", paging);   // questionList라는 이름으로 값 저장
-        model.addAttribute("kw", kw);
-        return "question_list"; // question_list.html 반환
-    }
-
     @GetMapping("/list/{id}")
     public String board(
             Model model,

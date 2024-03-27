@@ -33,6 +33,6 @@ public class MainController {
         Page<Results> paging = this.resultsService.getList(page, kw);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
-        return "search_result"; // question_list.html 반환
+        return "search_result";
     }
 }

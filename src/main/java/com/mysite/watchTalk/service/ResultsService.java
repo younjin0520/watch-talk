@@ -55,30 +55,6 @@ public class ResultsService {
         }
     }
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    public void deleteDuplicateResults() {
-        // 중복된 name 값을 가진 Results 엔티티를 식별
-        List<String> duplicateNames = entityManager.createQuery(
-                        "SELECT r.name FROM Results r GROUP BY r.name HAVING COUNT(r.name) > 1", String.class)
-                .getResultList();
-
-        // 중복된 name 값을 가진 Results 엔티티의 Question 엔티티 레코드 삭제
-        for (String name : duplicateNames) {
-            entityManager.createQuery("DELETE FROM Question q WHERE q.results.name = :name")
-                    .setParameter("name", name)
-                    .executeUpdate();
-        }
-
-        // 중복된 name 값을 가진 Results 엔티티 레코드 중 하나를 남기고 나머지 삭제
-        entityManager.createQuery("DELETE FROM Results r WHERE r.name IN :names AND r.id NOT IN (" +
-                        "SELECT MIN(r2.id) FROM Results r2 WHERE r2.name = r.name GROUP BY r2.name)")
-                .setParameter("names", duplicateNames)
-                .executeUpdate();
-    }
-
     // 검색
     private Specification<Results> search(String kw) {
         return new Specification<>() {

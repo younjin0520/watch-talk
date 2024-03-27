@@ -1,6 +1,5 @@
 package com.mysite.watchTalk.repository;
 
-import com.mysite.watchTalk.domain.Question;
 import com.mysite.watchTalk.domain.Results;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
